@@ -1,0 +1,83 @@
+<ng-container [ngSwitch]="type">
+  <ng-container *ngSwitchCase="controlType.INPUT">
+    <div class="dynamic-form-builder-control"
+         (change)="sendControlResult()" >
+      <mat-form-field>
+        <mat-label [require]="isRequired">{{label}}</mat-label>
+        <input matInput placeholder="{{placeholder}}" [(ngModel)]="value">
+      </mat-form-field>
+    </div>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="controlType.TEXTAREA">
+    <div class="dynamic-form-builder-control"
+         (change)="sendControlResult()">
+      <mat-form-field>
+        <mat-label [require]="isRequired">{{label}}</mat-label>
+        <textarea matInput placeholder="{{placeholder}}" [(ngModel)]="value"></textarea>
+      </mat-form-field>
+    </div>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="controlType.NUMBER">
+    <div class="dynamic-form-builder-control"
+         (change)="sendControlResult()" >
+      <mat-form-field>
+        <mat-label [require]="isRequired">{{label}}</mat-label>
+        <input matInput placeholder="{{placeholder}}" [(ngModel)]="value" type="number">
+      </mat-form-field>
+    </div>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="controlType.DATEPICKER">
+    <div class="dynamic-form-builder-control">
+      <mat-form-field appearance="fill">
+        <mat-label [require]="isRequired">{{label}}</mat-label>
+        <input matInput [matDatepicker]="picker" [(ngModel)]="value" (dateChange)="selectButton($event.value); sendControlResult()"
+               [placeholder]="placeholder">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="controlType.RADIO">
+    <div class="dynamic-form-builder-control dynamic-form-builder-control--margin">
+      <label class="dynamic-form-builder-control__label" [require]="isRequired">{{label}}</label>
+
+      <mat-radio-group [attr.aria-label]="label">
+        <ng-container *ngFor="let controlOption of controlOptions">
+          <mat-radio-button value="{{controlOption}}" (click)="selectButton(controlOption); sendControlResult()">{{controlOption}}</mat-radio-button>
+        </ng-container>
+      </mat-radio-group>
+    </div>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="controlType.SELECT">
+    <div class="dynamic-form-builder-control">
+      <mat-form-field appearance="fill">
+        <mat-label [require]="isRequired">{{label}}</mat-label>
+        <mat-select [(ngModel)]="value">
+          <ng-container *ngFor="let controlOption of controlOptions">
+            <mat-option value="{{controlOption}}" (click)="sendControlResult()"> {{controlOption}}</mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="controlType.CHECKBOX">
+    <div class="dynamic-form-builder-control dynamic-form-builder-control--margin">
+      <label class="dynamic-form-builder-control__label" [require]="isRequired">{{label}}</label>
+      <ng-container *ngFor="let controlOption of controlOptions">
+        <mat-checkbox (click)="selectButton(controlOption); sendControlResult()"> {{controlOption}}</mat-checkbox>
+      </ng-container>
+    </div>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="controlType.BUTTON">
+    <div class="dynamic-form-builder-control" (change)="sendControlResult()">
+      <button mat-raised-button color="primary">{{name}}</button>
+    </div>
+  </ng-container>
+</ng-container>

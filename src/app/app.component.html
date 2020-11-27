@@ -1,0 +1,19 @@
+<div class="dynamic-form-builder">
+  <div class="dynamic-form-builder-header">
+    <ul>
+      <li>
+        <a [routerLink]="['/form-builder']"
+           routerLinkActive="active">Form</a>
+      </li>
+      <span>/</span>
+      <li>
+        <a [routerLink]="['/new-control']"
+           routerLinkActive="active">Add New Control</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="dynamic-form-builder-content">
+    <router-outlet></router-outlet>
+  </div>
+</div>

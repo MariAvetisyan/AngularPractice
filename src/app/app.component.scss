@@ -1,0 +1,27 @@
+.dynamic-form-builder {
+
+}
+
+.dynamic-form-builder-header {
+  ul {
+    margin: 0;
+    padding: 12px 24px;
+    display: flex;
+    background: #586858;
+    list-style-type: none;
+  }
+
+  a, span {
+    color: white;
+    text-decoration: none;
+    font-family: fantasy;
+    font-size: 22px;
+    margin-right: 24px;
+  }
+}
+
+.dynamic-form-builder-content {
+  padding: 36px 0;
+  min-height: 100%;
+  background-color: darkseagreen;
+}

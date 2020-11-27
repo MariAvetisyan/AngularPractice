@@ -1,0 +1,48 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.mat-radio-button:not(:last-child), .mat-checkbox-label {
+  margin-right: 12px;
+}
+
+.mat-form-field {
+  width: 100%;
+}
+
+.mat-form-field-appearance-fill .mat-form-field-flex {
+  background-color: white;
+}
+
+.mat-radio-group {
+  display: block;
+}
+
+.mat-form-field-appearance-fill .mat-form-field-flex {
+  padding: 0 !important;
+}
+
+.label-required:after {
+  margin-left: 4px;
+  content: '*';
+  color: red;
+}
+
+.dynamic-form-control-validation-container {
+  .mat-form-field-appearance-fill .mat-form-field-subscript-wrapper {
+    padding: 0;
+  }
+
+  .mat-form-field-appearance-legacy .mat-form-field-underline,
+  .mat-form-field-appearance-fill .mat-form-field-underline::before {
+    background-color: red;
+  }
+
+  .mat-hint {
+    display: block;
+    margin-top: -16px;
+    font-size: 75%;
+    color: red;
+  }
+}

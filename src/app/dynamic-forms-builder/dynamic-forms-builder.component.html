@@ -1,0 +1,18 @@
+<mat-card class="dynamic-form-builder-card" *ngIf="formControls$ | async as formControls">
+  <div class="dynamic-form-control-container"
+       *ngFor="let formControl of formControls">
+    <app-dynamic-form-control [type]="formControl.type"
+                              [id]="formControl.id"
+                              [label]="formControl.label"
+                              [placeholder]="formControl.placeholder"
+                              [isRequired]="formControl.isRequired"
+                              [controlOptions]="formControl.controlOptions"
+                              (controlResultEmitter)="getControlResult($event)" >
+    </app-dynamic-form-control>
+  </div>
+
+  <div class="dynamic-form-builder__control">
+    <button mat-raised-button color="primary" (click)="sendData()">Submit</button>
+  </div>
+</mat-card>
+
