@@ -5,6 +5,5 @@ export enum ControlType {
   NUMBER,
   RADIO,
   CHECKBOX,
-  BUTTON,
   SELECT,
 }

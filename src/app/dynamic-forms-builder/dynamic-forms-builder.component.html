@@ -1,6 +1,7 @@
 <mat-card class="dynamic-form-builder-card" *ngIf="formControls$ | async as formControls">
   <div class="dynamic-form-control-container"
-       *ngFor="let formControl of formControls">
+       *ngFor="let formControl of formControls"
+       [ngClass]="{'dynamic-form-control-validation-container': formControl.validationErrorMessage}">
     <app-dynamic-form-control [type]="formControl.type"
                               [id]="formControl.id"
                               [label]="formControl.label"
@@ -9,6 +10,8 @@
                               [controlOptions]="formControl.controlOptions"
                               (controlResultEmitter)="getControlResult($event)" >
     </app-dynamic-form-control>
+    <mat-hint align="start" *ngIf="formControl.validationErrorMessage">
+      {{formControl.validationErrorMessage}}</mat-hint>
   </div>
 
   <div class="dynamic-form-builder__control">

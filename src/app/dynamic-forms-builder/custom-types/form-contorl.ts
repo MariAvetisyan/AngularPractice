@@ -8,6 +8,7 @@ export interface FormControl {
   placeholder?: string;
   isRequired?: boolean;
   controlOptions?: any[];
+  validationErrorMessage?: string;
 }
 
 export interface FormControlResult {

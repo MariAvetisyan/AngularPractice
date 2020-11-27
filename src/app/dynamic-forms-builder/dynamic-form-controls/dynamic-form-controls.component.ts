@@ -17,7 +17,7 @@ import {FormControlResult} from '../custom-types/form-contorl';
 })
 
 export class DynamicFormControlsComponent {
-  value: any[] = [];
+  value: any[]|string;
   @Output() controlResultEmitter = new EventEmitter<FormControlResult>();
 
   @Input() type: ControlType;
@@ -39,7 +39,11 @@ export class DynamicFormControlsComponent {
 
   selectButton(value: string) {
     if (this.type === this.controlType.CHECKBOX) {
-      this.value.push(value);
+      if (this.value) {
+        this.value.push(value);
+      } else {
+        this.value = value.split(' ');
+      }
     } else {
       this.value = value;
     }
