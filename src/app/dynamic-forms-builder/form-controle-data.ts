@@ -69,4 +69,51 @@ export class FormControlData {
       isRequired: false,
     },
   ];
+
+  static formNewControl: FormControl[] = [
+    {
+      type: ControlType.SELECT,
+      id: 'new-control-type',
+      label: 'Choose the type of control',
+      controlOptions: ['Select', 'Input', 'Textarea', 'Datepicker', 'Number', 'Radio',
+        'Checkbox', 'Button'],
+      isRequired: true,
+    },
+
+    {
+      type: ControlType.INPUT,
+      id: 'new-control-id',
+      label: 'Enter control id',
+      isRequired: true,
+    },
+
+    {
+      type: ControlType.INPUT,
+      id: 'new-control-label',
+      label: 'Enter control label',
+      isRequired: true,
+    },
+
+    {
+      type: ControlType.INPUT,
+      id: 'new-control-placeholder',
+      label: 'Enter control placeholder',
+      isRequired: false,
+    },
+
+    {
+      type: ControlType.INPUT,
+      id: 'new-control-control-option',
+      label: 'Enter control options',
+      isRequired: false,
+    },
+
+    {
+      type: ControlType.RADIO,
+      id: 'new-control-required',
+      label: 'Is control required?',
+      controlOptions: ['Yes', 'No'],
+      isRequired: true,
+    }
+  ];
 }

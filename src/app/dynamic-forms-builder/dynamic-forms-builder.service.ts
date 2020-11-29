@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {FormControl, FormControlResult} from './custom-types/form-contorl';
 import {HttpClient} from '@angular/common/http';
-import {map, tap} from 'rxjs/operators';
-import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
+import {map, tap, scan} from 'rxjs/operators';
+import {BehaviorSubject, combineLatest, merge, Observable, Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -28,13 +28,28 @@ export class DynamicFormsBuilderService {
 
         return formControl;
         }
-      )),
-    tap(item => console.log('form control with result', item))
+      ))
   );
 
-
-  private sendDataSubject = new BehaviorSubject<boolead>(false);
+  private sendDataSubject = new BehaviorSubject<boolean>(false);
   sendDataAction$ = this.sendDataSubject.asObservable();
+
+  private newControlSubject = new BehaviorSubject<FormControl>(null);
+  newControlAction$ = this.newControlSubject.asObservable();
+
+  formBuilderWithNewControl$ = combineLatest([
+    this.formBuilderWithResult$,
+    this.newControlAction$
+  ]).pipe(
+    map(([formBuilder, newControl]) => {
+      if (newControl) {
+        return [...formBuilder, newControl];
+      }
+
+      return formBuilder;
+    }),
+    tap(item => console.log('esel verjakanna', item))
+  );
 
   constructor(private http: HttpClient) {
   }
@@ -43,14 +58,16 @@ export class DynamicFormsBuilderService {
     this.controlResultSubject.next(result);
   }
 
+  addNewControl(newControl: FormControl) {
+    this.formBuilder$ = this.formBuilderWithNewControl$;
+    this.newControlSubject.next(newControl);
+  }
+
   sendData(formControls$: Observable<FormControl[]>) {
     this.sendDataSubject.next(true);
 
     console.log('Data received: ');
-    return this.http.post<Observable<FormControl[]>>(this.formBuilderUrl, formControls$)
-      .pipe(
-        tap(item => console.log(item))
-      );
+    return this.http.post<Observable<FormControl[]>>(this.formBuilderUrl, formControls$);
   }
 }
 

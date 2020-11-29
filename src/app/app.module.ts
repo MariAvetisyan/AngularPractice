@@ -13,6 +13,7 @@ import {appRoutes} from './app.routing';
 import {HttpClientModule} from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { MockDataInMemoryService } from './mock-data-in-memory.service';
+import { AddNewControlComponent } from './dynamic-forms-builder/add-new-control/add-new-control.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { MockDataInMemoryService } from './mock-data-in-memory.service';
     DynamicFormControlsComponent,
     DynamicFormsBuilderComponent,
     RequiredDirective,
+    AddNewControlComponent,
   ],
   imports: [
     BrowserModule,

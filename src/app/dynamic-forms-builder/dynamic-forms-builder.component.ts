@@ -1,8 +1,9 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {FormControl, FormControlResult} from './custom-types/form-contorl';
 import {DynamicFormsBuilderService} from './dynamic-forms-builder.service';
-import {combineLatest} from 'rxjs';
+import {combineLatest, merge} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
+import {scan} from 'rxjs/internal/operators';
 
 @Component({
   selector: 'app-dynamic-forms-builder',
@@ -12,14 +13,14 @@ import {map, tap} from 'rxjs/operators';
 })
 export class DynamicFormsBuilderComponent {
   formControls$ = combineLatest(
-    [this.dynamicFormService.formBuilderWithResult$,
+    [this.dynamicFormService.formBuilderWithNewControl$,
             this.dynamicFormService.sendDataAction$])
     .pipe(
-      map(([formBuilder, isDatSend]) =>
+      map(([formBuilder, isDataSend]) =>
         formBuilder.map((formControl: FormControl) => {
-          if (isDatSend && formControl.isRequired && !formControl.value) {
+          if (isDataSend && formControl.isRequired && !formControl.value) {
             formControl.validationErrorMessage = 'Field is required';
-          } else if (isDatSend && formControl.isRequired && formControl.value) {
+          } else if (isDataSend && formControl.isRequired && formControl.value) {
             formControl.validationErrorMessage = '';
           }
           return formControl;

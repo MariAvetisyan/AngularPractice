@@ -17,7 +17,7 @@ import {FormControlResult} from '../custom-types/form-contorl';
 })
 
 export class DynamicFormControlsComponent {
-  value: any[]|string;
+  value: any;
   @Output() controlResultEmitter = new EventEmitter<FormControlResult>();
 
   @Input() type: ControlType;

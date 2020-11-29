@@ -1,0 +1,16 @@
+<mat-card class="dynamic-form-new-control">
+  <div class="dynamic-form-control-container"
+       *ngFor="let formControl of addNewForm">
+    <app-dynamic-form-control [type]="formControl.type"
+                              [id]="formControl.id"
+                              [label]="formControl.label"
+                              [placeholder]="formControl.placeholder"
+                              [isRequired]="formControl.isRequired"
+                              [controlOptions]="formControl.controlOptions"
+                              (controlResultEmitter)="getControlResult($event)">
+    </app-dynamic-form-control>
+    <!--<mat-hint align="start"> Field is required</mat-hint>-->
+  </div>
+
+  <button mat-raised-button color="primary" (click)="addControl()"> Add </button>
+</mat-card>
