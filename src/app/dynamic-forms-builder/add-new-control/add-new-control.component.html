@@ -6,10 +6,10 @@
                               [label]="formControl.label"
                               [placeholder]="formControl.placeholder"
                               [isRequired]="formControl.isRequired"
+                              [hint]="formControl.hint"
                               [controlOptions]="formControl.controlOptions"
                               (controlResultEmitter)="getControlResult($event)">
     </app-dynamic-form-control>
-    <!--<mat-hint align="start"> Field is required</mat-hint>-->
   </div>
 
   <button mat-raised-button color="primary" (click)="addControl()"> Add </button>

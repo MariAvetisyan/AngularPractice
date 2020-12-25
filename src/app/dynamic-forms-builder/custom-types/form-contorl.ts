@@ -8,6 +8,8 @@ export interface FormControl {
   placeholder?: string;
   isRequired?: boolean;
   controlOptions?: any[];
+  hint?: string,
+  isShow?: boolean;
   validationErrorMessage?: string;
 }
 

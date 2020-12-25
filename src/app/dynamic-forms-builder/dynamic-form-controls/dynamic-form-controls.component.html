@@ -1,42 +1,50 @@
 <ng-container [ngSwitch]="type">
   <ng-container *ngSwitchCase="controlType.INPUT">
     <div class="dynamic-form-builder-control"
+         [ngClass]="{'dynamic-form-builder-control--margin': hint}"
          (change)="sendControlResult()" >
       <mat-form-field>
         <mat-label [require]="isRequired">{{label}}</mat-label>
         <input matInput placeholder="{{placeholder}}" [(ngModel)]="value">
+        <mat-hint *ngIf="hint">{{hint}}</mat-hint>
       </mat-form-field>
     </div>
   </ng-container>
 
   <ng-container *ngSwitchCase="controlType.TEXTAREA">
     <div class="dynamic-form-builder-control"
+         [ngClass]="{'dynamic-form-builder-control--margin': hint}"
          (change)="sendControlResult()">
       <mat-form-field>
         <mat-label [require]="isRequired">{{label}}</mat-label>
         <textarea matInput placeholder="{{placeholder}}" [(ngModel)]="value"></textarea>
+        <mat-hint *ngIf="hint">{{hint}}</mat-hint>
       </mat-form-field>
     </div>
   </ng-container>
 
   <ng-container *ngSwitchCase="controlType.NUMBER">
     <div class="dynamic-form-builder-control"
+         [ngClass]="{'dynamic-form-builder-control--margin': hint}"
          (change)="sendControlResult()" >
       <mat-form-field>
         <mat-label [require]="isRequired">{{label}}</mat-label>
         <input matInput placeholder="{{placeholder}}" [(ngModel)]="value" type="number">
+        <mat-hint *ngIf="hint">{{hint}}</mat-hint>
       </mat-form-field>
     </div>
   </ng-container>
 
   <ng-container *ngSwitchCase="controlType.DATEPICKER">
-    <div class="dynamic-form-builder-control">
+    <div class="dynamic-form-builder-control"
+         [ngClass]="{'dynamic-form-builder-control--margin': hint}">
       <mat-form-field appearance="fill">
         <mat-label [require]="isRequired">{{label}}</mat-label>
         <input matInput [matDatepicker]="picker" [(ngModel)]="value" (dateChange)="selectButton($event.value); sendControlResult()"
                [placeholder]="placeholder">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
+        <mat-hint *ngIf="hint">{{hint}}</mat-hint>
       </mat-form-field>
     </div>
   </ng-container>
@@ -50,11 +58,14 @@
           <mat-radio-button value="{{controlOption}}" (click)="selectButton(controlOption); sendControlResult()">{{controlOption}}</mat-radio-button>
         </ng-container>
       </mat-radio-group>
+
+      <mat-hint *ngIf="hint">{{hint}}</mat-hint>
     </div>
   </ng-container>
 
   <ng-container *ngSwitchCase="controlType.SELECT">
-    <div class="dynamic-form-builder-control">
+    <div class="dynamic-form-builder-control"
+         [ngClass]="{'dynamic-form-builder-control--margin': hint}">
       <mat-form-field appearance="fill">
         <mat-label [require]="isRequired">{{label}}</mat-label>
         <mat-select [(ngModel)]="value">
@@ -62,6 +73,8 @@
             <mat-option value="{{controlOption}}" (click)="sendControlResult()"> {{controlOption}}</mat-option>
           </ng-container>
         </mat-select>
+
+        <mat-hint *ngIf="hint">{{hint}}</mat-hint>
       </mat-form-field>
     </div>
   </ng-container>
@@ -72,6 +85,8 @@
       <ng-container *ngFor="let controlOption of controlOptions">
         <mat-checkbox (click)="selectButton(controlOption); sendControlResult()"> {{controlOption}}</mat-checkbox>
       </ng-container>
+
+      <mat-hint *ngIf="hint">{{hint}}</mat-hint>
     </div>
   </ng-container>
 </ng-container>

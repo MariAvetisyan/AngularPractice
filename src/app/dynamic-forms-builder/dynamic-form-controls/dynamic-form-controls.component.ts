@@ -11,6 +11,7 @@ import {FormControlResult} from '../custom-types/form-contorl';
                                        [label]="label"
                                        [placeholder]="placeholder"
                                        [isRequired]="isRequired"
+                                       [hint]="hint"
                                        [controlOptions]="controlOptions">
              </app-dynamic-form-control>`
 
@@ -26,6 +27,7 @@ export class DynamicFormControlsComponent {
   @Input() placeholder: string;
   @Input() isRequired: boolean;
   @Input() controlOptions: any[];
+  @Input() hint: string;
 
   public controlType = ControlType;
 

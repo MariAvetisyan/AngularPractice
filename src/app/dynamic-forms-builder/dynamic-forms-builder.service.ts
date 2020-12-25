@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
 import {FormControl, FormControlResult} from './custom-types/form-contorl';
 import {HttpClient} from '@angular/common/http';
-import {map, tap, scan} from 'rxjs/operators';
-import {BehaviorSubject, combineLatest, merge, Observable, Subject} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
+import {mergeMap, shareReplay} from 'rxjs/internal/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -13,45 +14,43 @@ export class DynamicFormsBuilderService {
 
   formBuilder$: Observable<FormControl[]> = this.http.get<FormControl[]>(this.formBuilderUrl);
 
+  private newControlSubject = new BehaviorSubject<FormControl>(null);
+  newControlAction$ = this.newControlSubject.asObservable();
+
   private controlResultSubject = new BehaviorSubject<FormControlResult>(null);
   controlResultAction$ = this.controlResultSubject.asObservable();
 
   formBuilderWithResult$ = combineLatest([
-    this.formBuilder$,
+    this.getFormControlsWithNew(),
     this.controlResultAction$
   ]).pipe(
     map(([formBuilder, controlResult]) =>
       formBuilder.map(formControl => {
-        if (controlResult && formControl.id === controlResult.id) {
+          if (controlResult && formControl.id === controlResult.id) {
             formControl.value = controlResult.value;
           }
 
-        return formControl;
+          return formControl;
         }
-      ))
-  );
-
-  private sendDataSubject = new BehaviorSubject<boolean>(false);
-  sendDataAction$ = this.sendDataSubject.asObservable();
-
-  private newControlSubject = new BehaviorSubject<FormControl>(null);
-  newControlAction$ = this.newControlSubject.asObservable();
-
-  formBuilderWithNewControl$ = combineLatest([
-    this.formBuilderWithResult$,
-    this.newControlAction$
-  ]).pipe(
-    map(([formBuilder, newControl]) => {
-      if (newControl) {
-        return [...formBuilder, newControl];
-      }
-
-      return formBuilder;
-    }),
-    tap(item => console.log('esel verjakanna', item))
+      )),
+    shareReplay(1)
   );
 
   constructor(private http: HttpClient) {
+  }
+
+  getFormControlsWithNew(): Observable<FormControl[]> {
+    return this.formBuilder$ = this.formBuilder$.pipe(
+      mergeMap(formBuilder => {
+          return this.newControlAction$.pipe(map(newControl => {
+            if(newControl) {
+              return [...formBuilder, newControl]
+            }
+
+            return formBuilder;
+          }))
+        }
+      ));
   }
 
   getControlResult(result: FormControlResult) {
@@ -59,14 +58,12 @@ export class DynamicFormsBuilderService {
   }
 
   addNewControl(newControl: FormControl) {
-    this.formBuilder$ = this.formBuilderWithNewControl$;
     this.newControlSubject.next(newControl);
   }
 
   sendData(formControls$: Observable<FormControl[]>) {
-    this.sendDataSubject.next(true);
-
     console.log('Data received: ');
+    formControls$.subscribe(item => console.log(item));
     return this.http.post<Observable<FormControl[]>>(this.formBuilderUrl, formControls$);
   }
 }
