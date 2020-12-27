@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
+import {combineLatest, Observable} from 'rxjs';
 import {FormControl, FormControlResult} from './custom-types/form-contorl';
 import {map, shareReplay} from 'rxjs/operators';
 
@@ -9,9 +9,9 @@ import {map, shareReplay} from 'rxjs/operators';
 
 export class HelperService {
 
-  static isDataValid(data: Observable<FormControl[]>): boolean {
+  static isDataValid(formControls: Observable<FormControl[]>): boolean {
     let isDataValid;
-    data.subscribe(formControls => {
+    formControls.subscribe(formControls => {
       let invalidData = formControls.find(item => item.isRequired && !item.value);
 
       isDataValid = !invalidData;
@@ -20,8 +20,8 @@ export class HelperService {
     return isDataValid;
   }
 
-  static validation(data: Observable<FormControl[]>): Observable<FormControl[]> {
-    return data.pipe(
+  static validation(formControls: Observable<FormControl[]>): Observable<FormControl[]> {
+    return formControls.pipe(
       map((formBuilder) =>
         formBuilder.map((formControl: FormControl) => {
           if (formControl.isRequired && !formControl.value) {
@@ -41,9 +41,9 @@ export class HelperService {
       shareReplay(1));
   }
 
-  static combineControlsWithResults(formControl: Observable<FormControl[]>, result: Observable<FormControlResult>): Observable<FormControl[]> {
+  static combineControlsWithResults(formControls: Observable<FormControl[]>, result: Observable<FormControlResult>): Observable<FormControl[]> {
     return combineLatest([
-      formControl,
+      formControls,
       result
     ]).pipe(
       map(([formBuilder, controlResult]) =>
