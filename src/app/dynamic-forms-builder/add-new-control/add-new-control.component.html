@@ -2,7 +2,6 @@
   <ng-container *ngIf="newControlWithResult$ | async as addNewControl">
     <ng-container  *ngFor="let formControl of addNewControl">
       <div class="dynamic-form-control-container"
-           *ngIf="formControl.isShow"
            [ngClass]="{'dynamic-form-control-validation-container': formControl.validationErrorMessage}">
         <app-dynamic-form-control [type]="formControl.type"
                                   [id]="formControl.id"

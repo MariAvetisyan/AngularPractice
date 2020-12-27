@@ -78,7 +78,6 @@ export class FormControlData {
       controlOptions: [ControlType.SELECT, ControlType.RADIO, ControlType.CHECKBOX, ControlType.NUMBER, ControlType.DATEPICKER,
         ControlType.TEXTAREA, ControlType.INPUT],
       isRequired: true,
-      isShow: true
     },
 
     {
@@ -86,7 +85,6 @@ export class FormControlData {
       id: 'new-control-id',
       label: 'Control id',
       isRequired: true,
-      isShow: true
     },
 
     {
@@ -94,7 +92,6 @@ export class FormControlData {
       id: 'new-control-label',
       label: 'Control label',
       isRequired: true,
-      isShow: true
     },
 
     {
@@ -102,24 +99,13 @@ export class FormControlData {
       id: 'new-control-placeholder',
       label: 'Control placeholder',
       isRequired: false,
-      isShow: true
     },
-
-    // {
-    //   type: ControlType.INPUT,
-    //   id: 'new-control-control-option',
-    //   label: 'Control options',
-    //   hint: 'Type options separate with comma and space',
-    //   isRequired: true,
-    //   isShow: false
-    // },
 
     {
       type: ControlType.INPUT,
       id: 'new-control-hint',
       label: 'Control hint',
       isRequired: false,
-      isShow: true
     },
 
     {
@@ -128,7 +114,6 @@ export class FormControlData {
       label: 'Is control required?',
       controlOptions: ['Yes', 'No'],
       isRequired: true,
-      isShow: true
     }
   ];
 }
