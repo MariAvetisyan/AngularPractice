@@ -75,37 +75,51 @@ export class FormControlData {
       type: ControlType.SELECT,
       id: 'new-control-type',
       label: 'Choose the type of control',
-      controlOptions: ['Select', 'Input', 'Textarea', 'Datepicker', 'Number', 'Radio',
-        'Checkbox', 'Button'],
+      controlOptions: [ControlType.SELECT, ControlType.RADIO, ControlType.CHECKBOX, ControlType.NUMBER, ControlType.DATEPICKER,
+        ControlType.TEXTAREA, ControlType.INPUT],
       isRequired: true,
+      isShow: true
     },
 
     {
       type: ControlType.INPUT,
       id: 'new-control-id',
-      label: 'Enter control id',
+      label: 'Control id',
       isRequired: true,
+      isShow: true
     },
 
     {
       type: ControlType.INPUT,
       id: 'new-control-label',
-      label: 'Enter control label',
+      label: 'Control label',
       isRequired: true,
+      isShow: true
     },
 
     {
       type: ControlType.INPUT,
       id: 'new-control-placeholder',
-      label: 'Enter control placeholder',
+      label: 'Control placeholder',
       isRequired: false,
+      isShow: true
     },
+
+    // {
+    //   type: ControlType.INPUT,
+    //   id: 'new-control-control-option',
+    //   label: 'Control options',
+    //   hint: 'Type options separate with comma and space',
+    //   isRequired: true,
+    //   isShow: false
+    // },
 
     {
       type: ControlType.INPUT,
-      id: 'new-control-control-option',
-      label: 'Enter control options',
+      id: 'new-control-hint',
+      label: 'Control hint',
       isRequired: false,
+      isShow: true
     },
 
     {
@@ -114,6 +128,7 @@ export class FormControlData {
       label: 'Is control required?',
       controlOptions: ['Yes', 'No'],
       isRequired: true,
+      isShow: true
     }
   ];
 }

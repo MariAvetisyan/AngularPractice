@@ -1,8 +1,7 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {FormControl, FormControlResult} from './custom-types/form-contorl';
+import {FormControlResult} from './custom-types/form-contorl';
 import {DynamicFormsBuilderService} from './dynamic-forms-builder.service';
-import {map} from 'rxjs/operators';
-import {shareReplay} from 'rxjs/internal/operators';
+import {HelperService} from './helper.service';
 
 @Component({
   selector: 'app-dynamic-forms-builder',
@@ -21,35 +20,9 @@ export class DynamicFormsBuilderComponent {
   }
 
   sendData(): void {
-    this.validation();
-    if(this.isDataValid()) {
+    this.formControls$ = HelperService.validation(this.dynamicFormService.formBuilderWithResult$);
+    if(HelperService.isDataValid(this.formControls$)) {
       this.dynamicFormService.sendData(this.formControls$);
     }
-  }
-
-  validation(): void {
-    this.formControls$ = this.dynamicFormService.formBuilderWithResult$.pipe(
-      map((formBuilder) =>
-        formBuilder.map((formControl: FormControl) => {
-          if (formControl.isRequired && !formControl.value) {
-            formControl.validationErrorMessage = 'Field is required';
-          } else if (formControl.isRequired && formControl.value) {
-            formControl.validationErrorMessage = '';
-          }
-          return formControl;
-        })
-      ),
-      shareReplay(1));
-  }
-
-  isDataValid(): boolean {
-    let isDataValid;
-    this.dynamicFormService.formBuilderWithResult$.subscribe(formControls => {
-      let invalidData = formControls.find(item => item.isRequired && !item.value);
-
-      isDataValid = !invalidData;
-    });
-
-    return isDataValid;
   }
 }

@@ -9,7 +9,8 @@ import {FormControlData} from './dynamic-forms-builder/form-controle-data';
 export class MockDataInMemoryService implements InMemoryDbService {
   createDb() {
     const formControls = FormControlData.formControls;
+    const formNewControl = FormControlData.formNewControl;
 
-    return {formControls};
+    return {formControls, formNewControl};
   }
 }

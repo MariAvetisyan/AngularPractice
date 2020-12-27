@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
 import {mergeMap, shareReplay} from 'rxjs/internal/operators';
+import {HelperService} from './helper.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,21 +21,7 @@ export class DynamicFormsBuilderService {
   private controlResultSubject = new BehaviorSubject<FormControlResult>(null);
   controlResultAction$ = this.controlResultSubject.asObservable();
 
-  formBuilderWithResult$ = combineLatest([
-    this.getFormControlsWithNew(),
-    this.controlResultAction$
-  ]).pipe(
-    map(([formBuilder, controlResult]) =>
-      formBuilder.map(formControl => {
-          if (controlResult && formControl.id === controlResult.id) {
-            formControl.value = controlResult.value;
-          }
-
-          return formControl;
-        }
-      )),
-    shareReplay(1)
-  );
+  formBuilderWithResult$ = HelperService.combineControlsWithResults(this.getFormControlsWithNew(),  this.controlResultAction$);
 
   constructor(private http: HttpClient) {
   }
@@ -50,7 +37,8 @@ export class DynamicFormsBuilderService {
             return formBuilder;
           }))
         }
-      ));
+      ),
+      shareReplay(1));
   }
 
   getControlResult(result: FormControlResult) {

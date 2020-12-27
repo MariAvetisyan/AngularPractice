@@ -1,16 +1,24 @@
 <mat-card class="dynamic-form-new-control">
-  <div class="dynamic-form-control-container"
-       *ngFor="let formControl of addNewForm">
-    <app-dynamic-form-control [type]="formControl.type"
-                              [id]="formControl.id"
-                              [label]="formControl.label"
-                              [placeholder]="formControl.placeholder"
-                              [isRequired]="formControl.isRequired"
-                              [hint]="formControl.hint"
-                              [controlOptions]="formControl.controlOptions"
-                              (controlResultEmitter)="getControlResult($event)">
-    </app-dynamic-form-control>
-  </div>
+  <ng-container *ngIf="newControlWithResult$ | async as addNewControl">
+    <ng-container  *ngFor="let formControl of addNewControl">
+      <div class="dynamic-form-control-container"
+           *ngIf="formControl.isShow"
+           [ngClass]="{'dynamic-form-control-validation-container': formControl.validationErrorMessage}">
+        <app-dynamic-form-control [type]="formControl.type"
+                                  [id]="formControl.id"
+                                  [label]="formControl.label"
+                                  [placeholder]="formControl.placeholder"
+                                  [isRequired]="formControl.isRequired"
+                                  [hint]="formControl.hint"
+                                  [controlOptions]="formControl.controlOptions"
+                                  (controlResultEmitter)="getControlResult($event)">
+        </app-dynamic-form-control>
+
+        <mat-hint align="start" *ngIf="formControl.validationErrorMessage" class="error-message">
+          {{formControl.validationErrorMessage}}</mat-hint>
+      </div>
+    </ng-container>
+  </ng-container>
 
   <button mat-raised-button color="primary" (click)="addControl()"> Add </button>
 </mat-card>

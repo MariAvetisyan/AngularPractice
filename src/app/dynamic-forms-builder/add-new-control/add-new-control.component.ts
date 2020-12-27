@@ -1,9 +1,12 @@
-import { Component } from '@angular/core';
-import {FormControlData} from '../form-controle-data';
-import {FormControl} from '../custom-types/form-contorl';
+import {Component} from '@angular/core';
+import {FormControl, FormControlResult} from '../custom-types/form-contorl';
 import {DynamicFormsBuilderService} from '../dynamic-forms-builder.service';
-import {ControlType} from '../custom-types/controls-types';
 import {Router} from '@angular/router';
+import {HttpClient} from '@angular/common/http';
+import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
+import {map, shareReplay} from 'rxjs/operators';
+import {ControlType} from '../custom-types/controls-types';
+import {HelperService} from '../helper.service';
 
 @Component({
   selector: 'app-add-new-control',
@@ -12,7 +15,9 @@ import {Router} from '@angular/router';
 })
 export class AddNewControlComponent {
 
-  addNewForm = FormControlData.formNewControl;
+  private addNewControlUrl = 'api/formNewControl';
+
+  addNewControl$: Observable<FormControl[]> = this.http.get<FormControl[]>(this.addNewControlUrl);
 
   private formControl: FormControl = {
     type: undefined,
@@ -23,57 +28,46 @@ export class AddNewControlComponent {
     controlOptions: undefined,
   };
 
+  controlResultSubject = new BehaviorSubject<FormControlResult>(null);
+  controlResultAction$ = this.controlResultSubject.asObservable();
 
-  constructor(private dynamicFormService: DynamicFormsBuilderService,
+  newControlWithResult$ = HelperService.combineControlsWithResults(this.addNewControl$, this.controlResultAction$);
+
+  constructor(private http: HttpClient,
+              private dynamicFormService: DynamicFormsBuilderService,
               private router: Router) { }
 
-  getControlResult(event) {
-    switch (event.id) {
+  getControlResult(result: FormControlResult) {
+    this.controlResultSubject.next(result);
+
+    switch (result.id) {
       case 'new-control-type':
-        switch (event.value) {
-          case 'Select':
-            this.formControl.type = ControlType.SELECT;
-            break;
-          case 'Input':
-            this.formControl.type = ControlType.INPUT;
-            break;
-          case 'Textarea':
-            this.formControl.type = ControlType.TEXTAREA;
-            break;
-          case 'Datepicker':
-            this.formControl.type = ControlType.DATEPICKER;
-            break;
-          case 'Number':
-            this.formControl.type = ControlType.NUMBER;
-            break;
-          case 'Radio':
-            this.formControl.type = ControlType.RADIO;
-            break;
-          case 'Checkbox':
-            this.formControl.type = ControlType.CHECKBOX;
-            break;
-        }
+        this.formControl.type = ControlType[result.value.toUpperCase()];
         break;
       case 'new-control-id':
-        this.formControl.id = event.value;
+        this.formControl.id = result.value;
         break;
       case 'new-control-label':
-        this.formControl.label = event.value;
+        this.formControl.label = result.value;
         break;
       case 'new-control-placeholder':
-        this.formControl.placeholder = event.value;
+        this.formControl.placeholder = result.value;
         break;
       case 'new-control-control-option':
-        this.formControl.controlOptions = event.value.split(', ');
+        this.formControl.controlOptions = result.value.split(', ');
         break;
       case 'new-control-required':
-        this.formControl.isRequired = event.value === 'Yes';
+        this.formControl.isRequired = result.value === 'Yes';
         break;
     }
   }
 
   addControl(): void {
-    this.dynamicFormService.addNewControl(this.formControl);
-    this.router.navigateByUrl('/form-builder');
+    this.newControlWithResult$ = HelperService.validation(this.newControlWithResult$);
+
+    if(HelperService.isDataValid(this.newControlWithResult$)) {
+      this.dynamicFormService.addNewControl(this.formControl);
+      this.router.navigateByUrl('/form-builder');
+    }
   }
 }

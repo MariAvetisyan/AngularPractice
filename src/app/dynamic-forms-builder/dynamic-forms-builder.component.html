@@ -8,9 +8,10 @@
                               [placeholder]="formControl.placeholder"
                               [isRequired]="formControl.isRequired"
                               [controlOptions]="formControl.controlOptions"
+                              [hint]="formControl.hint"
                               (controlResultEmitter)="getControlResult($event)" >
     </app-dynamic-form-control>
-    <mat-hint align="start" *ngIf="formControl.validationErrorMessage">
+    <mat-hint align="start" *ngIf="formControl.validationErrorMessage" class="error-message">
       {{formControl.validationErrorMessage}}</mat-hint>
   </div>
 
