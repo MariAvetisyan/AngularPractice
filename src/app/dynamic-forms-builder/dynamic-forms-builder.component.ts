@@ -21,7 +21,7 @@ export class DynamicFormsBuilderComponent {
 
   sendData(): void {
     this.formControls$ = HelperService.validation(this.dynamicFormService.formBuilderWithResult$);
-    if(HelperService.isDataValid(this.formControls$)) {
+    if(HelperService.isValidationError(this.formControls$)) {
       this.dynamicFormService.sendData(this.formControls$);
     }
   }

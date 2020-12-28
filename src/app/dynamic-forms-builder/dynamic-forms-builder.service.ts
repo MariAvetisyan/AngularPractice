@@ -3,8 +3,7 @@ import {FormControl, FormControlResult} from './custom-types/form-contorl';
 import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {BehaviorSubject, combineLatest, Observable} from 'rxjs';
-import {mergeMap, shareReplay} from 'rxjs/internal/operators';
-import {HelperService} from './helper.service';
+import {shareReplay} from 'rxjs/internal/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -21,32 +20,47 @@ export class DynamicFormsBuilderService {
   private controlResultSubject = new BehaviorSubject<FormControlResult>(null);
   controlResultAction$ = this.controlResultSubject.asObservable();
 
-  formBuilderWithResult$ = HelperService.combineControlsWithResults(this.getFormControlsWithNew(),  this.controlResultAction$);
+  formBuilderWithResult$ = this.formBuilder$;
 
   constructor(private http: HttpClient) {
   }
 
-  getFormControlsWithNew(): Observable<FormControl[]> {
-    return this.formBuilder$ = this.formBuilder$.pipe(
-      mergeMap(formBuilder => {
-          return this.newControlAction$.pipe(map(newControl => {
-            if(newControl) {
-              return [...formBuilder, newControl]
+  getFormBuilder(): Observable<FormControl[]> {
+
+    return this.formBuilderWithResult$ = combineLatest([
+      this.formBuilderWithResult$,
+      this.controlResultAction$,
+      this.newControlAction$
+    ]).pipe(
+      map(([formBuilder, controlResult, newControl]) => {
+        formBuilder.map(formControl => {
+            if (controlResult && formControl.id === controlResult.id) {
+              formControl.value = controlResult.value;
             }
 
-            return formBuilder;
-          }))
+            return formControl;
+          }
+        );
+
+        if (newControl) {
+          return [...formBuilder, newControl];
         }
-      ),
-      shareReplay(1));
+
+        return formBuilder;
+
+      }),
+      shareReplay(1)
+    );
   }
 
   getControlResult(result: FormControlResult) {
     this.controlResultSubject.next(result);
+    this.getFormBuilder();
   }
 
   addNewControl(newControl: FormControl) {
     this.newControlSubject.next(newControl);
+    this.getFormBuilder();
   }
 
   sendData(formControls$: Observable<FormControl[]>) {

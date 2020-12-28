@@ -111,7 +111,7 @@ export class AddNewControlComponent {
   addControl(): void {
     this.newControlWithResult$ = HelperService.validation(this.newControlWithResult$);
 
-    if(HelperService.isDataValid(this.newControlWithResult$)) {
+    if(HelperService.isValidationError(this.newControlWithResult$)) {
       this.dynamicFormService.addNewControl(this.formNewControl);
       this.router.navigateByUrl('/form-builder');
     }
