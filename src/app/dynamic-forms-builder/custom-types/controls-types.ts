@@ -6,4 +6,5 @@ export enum ControlType {
   RADIO = "Radio",
   CHECKBOX = "Checkbox",
   SELECT = "Select",
+  CONTROL_OPTIONS = "Control Option"
 }

@@ -8,16 +8,16 @@ export class FormControlData {
       type: ControlType.INPUT,
       id: 'name',
       label: 'Enter your name',
-      placeholder: 'Name',
-      isRequired: true
+      isRequired: true,
+      isRemovable: true
     },
 
     {
       type: ControlType.INPUT,
       id: 'surname',
       label: 'Enter your surname',
-      placeholder: 'Surname',
-      isRequired: true
+      isRequired: true,
+      isRemovable: true
     },
 
     {
@@ -25,7 +25,8 @@ export class FormControlData {
       id: 'birth-date',
       label: 'Birth Date',
       placeholder: 'mm/dd/yyyy',
-      isRequired: true
+      isRequired: true,
+      isRemovable: true
     },
 
     {
@@ -33,6 +34,7 @@ export class FormControlData {
       id: 'gender',
       label: 'Gender',
       isRequired: true,
+      isRemovable: true,
       controlOptions: ['Male', 'Female']
     },
 
@@ -41,7 +43,8 @@ export class FormControlData {
       id: 'phone',
       label: 'Phone number',
       placeholder: '37499999999',
-      isRequired: true
+      isRequired: true,
+      isRemovable: true
     },
 
     {
@@ -50,6 +53,7 @@ export class FormControlData {
       label: 'City where you live',
       placeholder: 'Select the city',
       isRequired: true,
+      isRemovable: true,
       controlOptions: ['Yerevan', 'Vanadzor', 'Gyumri', 'Martakert', 'Spitak', 'Martuni']
     },
 
@@ -58,6 +62,7 @@ export class FormControlData {
       id: 'hobby',
       label: 'Your hobby',
       isRequired: false,
+      isRemovable: true,
       controlOptions: ['Playing games', 'Coding', 'Sleeping', 'Hacking', 'Reading']
     },
 
@@ -65,8 +70,8 @@ export class FormControlData {
       type: ControlType.TEXTAREA,
       id: 'info',
       label: 'Additional info',
-      placeholder: 'Additional info',
       isRequired: false,
+      isRemovable: true
     },
   ];
 

@@ -20,47 +20,52 @@ export class DynamicFormsBuilderService {
   private controlResultSubject = new BehaviorSubject<FormControlResult>(null);
   controlResultAction$ = this.controlResultSubject.asObservable();
 
-  formBuilderWithResult$ = this.formBuilder$;
+  private removeControlSubject = new BehaviorSubject<string>(null);
+  removeControlAction$ = this.removeControlSubject.asObservable();
+
+  formBuilderWithResult$ = combineLatest([
+    this.formBuilder$,
+    this.controlResultAction$,
+    this.newControlAction$,
+    this.removeControlAction$
+  ]).pipe(
+    map(([formBuilder, controlResult, newControl, removeControl]) => {
+      if (newControl) {
+        formBuilder = [...formBuilder, newControl];
+      }
+
+      formBuilder.map(formControl => {
+          if (controlResult && formControl.id === controlResult.id) {
+            formControl.value = controlResult.value;
+          }
+
+          return formControl;
+        }
+      );
+
+      if(removeControl) {
+        formBuilder.splice(formBuilder.indexOf(formBuilder.find(item => item.id == removeControl)), 1);
+      }
+
+      return formBuilder;
+
+    }),
+    shareReplay(1)
+  );
 
   constructor(private http: HttpClient) {
   }
 
-  getFormBuilder(): Observable<FormControl[]> {
-
-    return this.formBuilderWithResult$ = combineLatest([
-      this.formBuilderWithResult$,
-      this.controlResultAction$,
-      this.newControlAction$
-    ]).pipe(
-      map(([formBuilder, controlResult, newControl]) => {
-        formBuilder.map(formControl => {
-            if (controlResult && formControl.id === controlResult.id) {
-              formControl.value = controlResult.value;
-            }
-
-            return formControl;
-          }
-        );
-
-        if (newControl) {
-          return [...formBuilder, newControl];
-        }
-
-        return formBuilder;
-
-      }),
-      shareReplay(1)
-    );
-  }
-
   getControlResult(result: FormControlResult) {
     this.controlResultSubject.next(result);
-    this.getFormBuilder();
   }
 
   addNewControl(newControl: FormControl) {
     this.newControlSubject.next(newControl);
-    this.getFormBuilder();
+  }
+
+  removeControl(controlId: string) {
+    this.removeControlSubject.next(controlId);
   }
 
   sendData(formControls$: Observable<FormControl[]>) {
@@ -69,5 +74,3 @@ export class DynamicFormsBuilderService {
     return this.http.post<Observable<FormControl[]>>(this.formBuilderUrl, formControls$);
   }
 }
-
-

@@ -41,8 +41,112 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
   .error-message {
     display: block;
-    margin-top: -16px;
+    margin-top: 4px;
     font-size: 75%;
     color: red;
+  }
+}
+
+.mat-hint {
+  margin-top: 15px;
+}
+
+.mat-form-field-wrapper {
+  padding-bottom: 0;
+
+  .mat-form-field-underline {
+    bottom: 1px;
+
+    &:not(.mat-focused) {
+      background-color: transparent;
+    }
+  }
+}
+
+.mat-input-element:not(textarea),
+.mat-select {
+  margin-top: 0 !important;
+  height: 32px;
+  line-height: 32px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+}
+
+textarea.mat-input-element {
+  line-height: 1.2;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+}
+
+.mat-form-field-prefix,
+.mat-form-field-suffix {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute !important;
+  right: 12px;
+  bottom: 4px;
+  z-index: 2;
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+
+  .mat-icon-button {
+    width: 31px;
+    height: 31px;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+
+.mat-form-field-infix {
+  z-index: 1;
+  height: 32px;
+  border: 0;
+}
+
+.mat-form-field-placeholder-wrapper {
+  top: 0;
+  padding-top: 0;
+
+  .mat-form-field-label {
+    top: 0;
+    padding: 0 9px;
+    height: 32px;
+    line-height: 32px;
+  }
+}
+
+.mat-form-field-label {
+  display: none !important;
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-wrapper {
+  padding-bottom: 13px;
+}
+
+.mat-form-field-appearance-fill .mat-form-field-infix {
+  padding: .25em 0 1.3em 0;
+}
+
+.mat-form-field-hide-placeholder .mat-input-element::placeholder{
+  color: rgba(0, 0, 0, 0.4) !important;
+  -webkit-text-fill-color: rgba(0, 0, 0, 0.4) !important;
+}
+
+.mat-form-field-appearance-fill .mat-select-arrow-wrapper {
+  transform: none !important;
+}
+
+.dynamic-form-builder-control--border {
+  .mat-form-field-wrapper {
+    padding-bottom: 0 !important;
+  }
+
+  .mat-form-field-infix {
+    padding-bottom: 0 !important;
   }
 }

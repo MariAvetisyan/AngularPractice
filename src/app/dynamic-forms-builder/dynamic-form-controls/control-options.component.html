@@ -1,0 +1,11 @@
+<div *ngFor="let count of controlOptionsCount; let i = index"
+      class="dfb-control-option">
+  <mat-form-field class="example-full-width">
+    <mat-label>Favorite food</mat-label>
+    <input matInput #controlOption (change)="getResult(controlOption.value, i)">
+  </mat-form-field>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="flex-end center">
+  <button mat-raised-button color="primary" (click)="addOption()">Add option</button>
+</div>

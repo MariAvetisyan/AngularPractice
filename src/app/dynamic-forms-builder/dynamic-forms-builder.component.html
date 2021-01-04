@@ -9,7 +9,9 @@
                               [isRequired]="formControl.isRequired"
                               [controlOptions]="formControl.controlOptions"
                               [hint]="formControl.hint"
-                              (controlResultEmitter)="getControlResult($event)" >
+                              [isRemovable]="formControl.isRemovable"
+                              (controlResultEmitter)="getControlResult($event)"
+                              (removeControlEmitter)="removeControl($event)" >
     </app-dynamic-form-control>
     <mat-hint align="start" *ngIf="formControl.validationErrorMessage" class="error-message">
       {{formControl.validationErrorMessage}}</mat-hint>

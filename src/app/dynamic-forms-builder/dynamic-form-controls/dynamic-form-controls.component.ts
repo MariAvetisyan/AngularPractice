@@ -18,8 +18,11 @@ import {FormControlResult} from '../custom-types/form-contorl';
 })
 
 export class DynamicFormControlsComponent {
+
+  ControlType = ControlType;
   value: any;
   @Output() controlResultEmitter = new EventEmitter<FormControlResult>();
+  @Output() removeControlEmitter = new EventEmitter<string>();
 
   @Input() type: ControlType;
   @Input() id: string;
@@ -28,8 +31,7 @@ export class DynamicFormControlsComponent {
   @Input() isRequired: boolean;
   @Input() controlOptions: any[];
   @Input() hint: string;
-
-  public controlType = ControlType;
+  @Input() isRemovable: boolean;
 
   constructor() { }
 
@@ -39,8 +41,12 @@ export class DynamicFormControlsComponent {
     this.controlResultEmitter.emit(result);
   }
 
+  removeControl() {
+    this.removeControlEmitter.emit(this.id);
+  }
+
   selectButton(value: string) {
-    if (this.type === this.controlType.CHECKBOX) {
+    if (this.type === ControlType.CHECKBOX) {
       if (this.value) {
         this.value.push(value);
       } else {
@@ -49,5 +55,10 @@ export class DynamicFormControlsComponent {
     } else {
       this.value = value;
     }
+  }
+
+  controlOptionsResult(value: Array<string>) {
+    this.value = value;
+    this. sendControlResult();
   }
 }

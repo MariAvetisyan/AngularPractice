@@ -9,7 +9,7 @@ export interface FormControl {
   isRequired?: boolean;
   controlOptions?: any[];
   hint?: string,
-  isShow?: boolean;
+  isRemovable?: boolean;
   validationErrorMessage?: string;
 }
 

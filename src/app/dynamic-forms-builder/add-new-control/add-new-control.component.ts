@@ -22,10 +22,9 @@ export class AddNewControlComponent {
   private formNewControl: FormControl = {} as FormControl;
 
   private optionalControl = {
-      type: ControlType.INPUT,
+      type: ControlType.CONTROL_OPTIONS,
       id: 'new-control-control-options',
       label: 'Control options',
-      hint: 'Type options separate with comma and space',
       isRequired: true,
     };
 
@@ -95,7 +94,7 @@ export class AddNewControlComponent {
         this.formNewControl.placeholder = result.value;
         break;
       case 'new-control-control-options':
-        this.formNewControl.controlOptions = result.value.split(', ');
+        this.formNewControl.controlOptions = result.value;
         break;
       case 'new-control-required':
         this.formNewControl.isRequired = result.value === 'Yes';
